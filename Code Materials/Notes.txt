@@ -1,0 +1,3 @@
+mel specs csv's hold the image data arrays as records. 
+more columns means a more clear picture
+ideal demensions 120x270
