@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+<!-- Page title -->
+{% block title %}Sindupedia{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="row">
+    <div class="col"><h3 class="font-weight-bold pt-3 pl-0 customclass">Music Library <i class="fa fa-chevron-right" style="font-size:18px;"></i> 
+        {{genreTile}}</h3></div>
+    <div class="col">
+        <form action="/Extract-keywords" method="post">
+            <div class="input-group pt-3">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" name="keyword"
+                    placeholder="Search for songs" 
+                    autocomplete="off"
+                    style="min-width: 570px;border-radius: 11px 0px 0px 11px;" />
+                </div>
+                <input type="hidden" name="gnre" value="{{genre}}">
+                <button type="submit" 
+                class="btn btn-dark" 
+                style="border-radius: 0px 11px 11px 0px;min-width: 65px;"
+                >
+                  <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4" style="font-family: 'Inter', sans-serif !important;min-height:445px">
+    {% for row in songlist %}
+        <div class="row mb-3">
+            {% for file in row %}
+                <div class="col-3">
+                    <div class="card" style="width: 20rem; height: 12rem;">
+                        <div class="card-body d-flex flex-column">
+                            <small class="card-text text-uppercase customclass">
+                                {{file.original_name}}
+                            </small>
+                            <a href="{{ url_for('downloads', id = file.id) }}" target="_blank"
+                            class="btn btn-dark mt-auto customclass customclassPlayBtn"
+                            style="border-radius: 30px;" >
+                                <i class="fa fa-play" style="font-size: larger;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .customclass{
+        font-family: 'Inter', sans-serif !important
+    }
+    .customclassPlayBtn{
+        width : 40px !important;
+        height: 40px !important;
+        padding: 0px;
+        padding-top: 10px;
+        padding-left: 2px;
+    }
+    /* .customclassPlayBtn:hover{
+        background-color: #212429;
+    } */
+</style>
+{% endblock %}

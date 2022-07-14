@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+<!-- Page title -->
+{% block title %}Sindupedia{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div style="min-height:533px">
+    <div class="pt-3 pl-0">
+        <h4 class="font-weight-bold customclass">Genre Results</h4>
+        <p><small>{{songName}}</small></p>
+    </div>
+    
+    <hr style="max-width: 1300px;">
+
+    <p class="pt-2 pl-0 customclass">
+        The main genre of this song is &nbsp;&nbsp;
+        {% if maingenre == 0 %}
+            <span class="label-base classics-label">Classics</span>
+        {% elif maingenre == 1 %}
+            <span class="label-base dance-label">Dance</span>
+        {% elif maingenre == 2 %}
+            <span class="label-base disco-label">Disco</span>
+        {% elif maingenre == 3 %}
+            <span class="label-base hiphop-label">Hip-Hop</span>
+        {% elif maingenre == 4 %}
+            <span class="label-base pop-label">Pop</span>
+        {% elif maingenre == 5 %}
+            <span class="label-base rnb-label">R&B</span>
+        {% elif maingenre == 6 %}
+            <span class="label-base soul-label">Soul</span>
+        {% elif maingenre == 7 %}
+            <span class="label-base sj-label">Swing & Jazz</span>
+        {% endif %} 
+    </p>
+
+    <p class="pt-2 pl-0 customclass">We also detected these sub-genre(s) in the song</p>
+    <p class="pb-4 pt-1 pl-0 customclass">
+        {% for g in subgenre %}
+            {% if g != maingenre %}
+                {% if g == 0 %}
+                    <span class="label-base classics-label">Classics</span>
+                {% elif g == 1 %}
+                    <span class="label-base dance-label">Dance</span>
+                {% elif g == 2 %}
+                    <span class="label-base disco-label">Disco</span>
+                {% elif g == 3 %}
+                    <span class="label-base hiphop-label">Hip-Hop</span>
+                {% elif g == 4 %}
+                    <span class="label-base pop-label">Pop</span>
+                {% elif g == 5 %}
+                    <span class="label-base rnb-label">R&B</span>
+                {% elif g == 6 %}
+                    <span class="label-base soul-label">Soul</span>
+                {% elif g == 7 %}
+                    <span class="label-base sj-label">Swing & Jazz</span>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </p>
+
+    <hr style="max-width: 1300px;">
+    
+    <div class="row">
+        <div class="col-9">
+            <h4 class="font-weight-bold pt-1 pb-3 pl-0 customclass">Audio Clip Analysis</h4>
+        </div>
+        <div class="col-3 d-flex justify-content-end" style="padding-right: 30px !important;">
+            {% if sdb != '' %}
+                <a 
+                    target="_blank"
+                    href="{{ url_for('downloadGeneratedMp3',filename=sdb) }}" 
+                    class="btn btn-dark"
+                    style="border-radius: 30px; width: 210px; height: 35px;"
+                >&#8595; Download Audio File</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    {% for x in range(0,noc) %}
+        <div class="row text-center customclass pt-5 mb-3">
+            <div class="col-2 d-flex align-items-center justify-content-end">{{timestamps[x]}}</div>
+            <div class="col-8">
+                <img src="/static/plotted_graphs/{{wavforms[x]}}">
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-start">{{timestamps[x+1]}}</div>
+        </div>
+        <div class="row text-center customclass pt-2">
+            <div class="col-1"></div>
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <a href="{{ url_for('directToThemelSpectrogram', name=allFiles[x]) }}" target="_blank" class="view-link" style="text-decoration: none;">View Spectrogram</a>
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-center">
+                {% if clipGenre[x] == 0 %}
+                    <span class="label-base classics-label d-flex align-items-center"
+                    style="height: 28px">Classics</span>
+                {% elif clipGenre[x] == 1 %}
+                    <span class="label-base dance-label d-flex align-items-center"
+                    style="height: 28px">Dance</span>
+                {% elif clipGenre[x] == 2 %}
+                    <span class="label-base disco-label d-flex align-items-center"
+                    style="height: 28px">Disco</span>
+                {% elif clipGenre[x] == 3 %}
+                    <span class="label-base hiphop-label d-flex align-items-center"
+                    style="height: 28px">Hip-Hop</span>
+                {% elif clipGenre[x] == 4 %}
+                    <span class="label-base pop-label d-flex align-items-center"
+                    style="height: 28px">Pop</span>
+                {% elif clipGenre[x] == 5 %}
+                    <span class="label-base rnb-label d-flex align-items-center"
+                    style="height: 28px">R&B</span>
+                {% elif clipGenre[x] == 6 %}
+                    <span class="label-base soul-label d-flex align-items-center"
+                    style="height: 28px">Soul</span>
+                {% elif clipGenre[x] == 7 %}
+                    <span class="label-base sj-label d-flex align-items-center"
+                    style="height: 28px">Swing & Jazz</span>
+                {% endif %}
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <a href="{{ url_for('directToTheAudioClip', name=allFiles[x]) }}" target="_blank" class="view-link" style="text-decoration: none;">Play Audio Clip</a>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    {% endfor %}
+
+    <div class="d-flex justify-content-center">
+        <a 
+            href="/Home" 
+            class="btn btn-primary w-25"
+            style="border-radius: 30px; margin-top: 70px; margin-bottom: 100px;"
+        >&#8592; Back To Menu</a>
+    </div>
+</div>
+
+<style>
+    .customclass{
+        font-family: 'Inter', sans-serif !important
+    }
+    .label-base{
+        padding: 4px 15px 4px 15px;
+        border-radius: 50px;
+        height: 40px;
+        font-size: large;
+    }
+    .disco-label {
+        color: #990000;   
+        background-color: #ffb3b3;  
+    }
+    .classics-label {
+        color: #4d3319;
+        background-color: #d9b38c;
+    }
+    .dance-label {
+        color: #400080;
+        background-color: #cc99ff;
+    }
+    .hiphop-label {
+        color: #cc6600;
+        background-color: #ffbf80;
+    }
+    .pop-label {
+        color: #006600;
+        background-color: #80ff80;
+    }
+    .rnb-label {
+        color: #000099;
+        background-color: #b3b3ff;
+    }
+    .soul-label {
+        color: #b30047;
+        background-color: #ffb3d1;
+    }
+    .sj-label {
+        color: #999900;
+        background-color: #ffff66;
+    }
+    .view-link:hover{
+        font-weight: 700;
+        color: #1f3044;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+<!-- Page title -->
+{% block title %}Sindupedia{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+<div class="row">
+    <div class="col"><h3 class="font-weight-bold pt-3 pl-0 customclass">Music Library</h3></div>
+    <div class="col">
+        <form action="/Extract-keywords/All-genres" method="post">
+            <div class="input-group pt-3">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" name="keyword"
+                    autocomplete="off"
+                    placeholder="Search for songs" 
+                    style="min-width: 570px;border-radius: 11px 0px 0px 11px;" />
+                </div>
+                <button type="submit" 
+                class="btn btn-dark" 
+                style="border-radius: 0px 11px 11px 0px;min-width: 65px;"
+                >
+                  <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4" style="font-family: 'Inter', sans-serif !important;min-height:445px">
+    {% for row in songlist %}
+        <div class="row mb-3">
+            {% for file in row %}
+                <div class="col-3">
+                    <div class="card" style="width: 20rem; height: 13rem;">
+                        <div class="card-body d-flex flex-column">
+                            <small class="card-text text-uppercase customclass" >
+                                {{file.original_name}}
+                            </small>
+                                {% if file.genre == 0 %}
+                                    <span class="label-base classics-label">Classics</span>
+                                {% elif file.genre == 1 %}
+                                    <span class="label-base dance-label">Dance</span>
+                                {% elif file.genre == 2 %}
+                                    <span class="label-base disco-label">Disco</span>
+                                {% elif file.genre == 3 %}
+                                    <span class="label-base hiphop-label">Hip-Hop</span>
+                                {% elif file.genre == 4 %}
+                                    <span class="label-base pop-label">Pop</span>
+                                {% elif file.genre == 5 %}
+                                    <span class="label-base rnb-label">R&B</span>
+                                {% elif file.genre == 6 %}
+                                    <span class="label-base soul-label">Soul</span>
+                                {% elif file.genre == 7 %}
+                                    <span class="label-base sj-label">Swing & Jazz</span>
+                                {% endif %}
+                            <a href="{{ url_for('downloads', id = file.id) }}" target="_blank"
+                            class="btn btn-dark mt-auto customclass customclassPlayBtn"
+                            style="border-radius: 30px;" >
+                                <i class="fa fa-play ic" style="font-size: larger;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .customclass{
+        font-family: 'Inter', sans-serif !important
+    }
+    .customclassPlayBtn{
+        width : 40px !important;
+        height: 40px !important;
+        padding: 0px;
+        padding-top: 10px;
+        padding-left: 2px;
+    }
+    /* .customclassPlayBtn:hover{
+        width : 55px !important;
+        height : 55px !important;
+        padding: 0px;
+        padding-top: 17px;
+        padding-left: 4px;
+    }
+    .fa:hover{
+        size: 2em;
+    } */
+
+    .label-base{
+        padding: 4px 5px 4px 15px;
+        border-radius: 50px;
+        max-height: 30px;
+        margin-top: 5px;
+        font-size: small;
+    }
+    .disco-label {
+        color: #990000;   
+        background-color: #ffb3b3; 
+        max-width: 64px;   
+    }
+    .classics-label {
+        color: #4d3319;
+        background-color: #d9b38c;
+        max-width: 81px;
+    }
+    .dance-label {
+        color: #400080;
+        background-color: #cc99ff;
+        max-width: 68px;
+    }
+    .hiphop-label {
+        color: #cc6600;
+        background-color: #ffbf80;
+        max-width: 81px;
+    }
+    .pop-label {
+        color: #006600;
+        background-color: #80ff80;
+        max-width: 53px;
+    }
+    .rnb-label {
+        color: #000099;
+        background-color: #b3b3ff;
+        max-width: 55px;
+    }
+    .soul-label {
+        color: #b30047;
+        background-color: #ffb3d1;
+        max-width: 57px;
+    }
+    .sj-label {
+        color: #999900;
+        background-color: #ffff66;
+        max-width: 112px;
+    }
+</style>
+{% endblock %}

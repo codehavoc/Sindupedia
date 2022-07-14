@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+<!-- Page title -->
+{% block title %}Sindupedia{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+
+<div class="main-body" id="main-body">
+    {% with alerts = get_flashed_messages(with_categories=true) %}
+        {% if alerts %}
+            {% for category,alt in alerts %}
+                {% if category == "error" %}
+                    <div class="alert alert-danger alert-dismissible text-center fade show" role="alert">
+                        <small>{{alt}}</small>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="modal" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <strong>About <b>Sindupedia</b>,</strong>
+                    <p style="padding-top: 5px; padding-bottom: 10px;">
+                        <small>Hello {{session.authdata.fname}}!! <br><br>This platform provides several facilities for Sinhala song analysis. This includes <i><b>Genre classification,
+                            Genre analysis of a song clip, Audio downloads & Access to our audio collections.</b></i></small>
+                    </p>
+
+                    <strong>Find genre(s) of a song</strong>
+                    <p style="padding-top: 5px;">
+                        <small>
+                            By submitting an audio clip of a Sinhala song or providing with a valid link to Sindupedia, you can start the genre analysation
+                        process. <br> Please be noted that we are currently accepting only <b>MP3</b> type files.
+                        </small>
+                    </p>
+                    <strong>Genre analysis</strong>
+                    <p style="padding-top: 5px;">
+                        <small>
+                            Sindupedia will report you the main genre(s) and sub genres of your submitted song clip. This report will also include the <b>timeframes</b>
+                            of each genre and graphed <b>spectrograms</b> for each timeframe. <br> Please be noted that Sindupedia music collection will grow apon user 
+                            uploads and we will continue update our respective music collections based upon your audio clip uploads as well.
+                        </small>
+                    </p>
+                    <strong>Our free music collections</strong>
+                    <p style="padding-top: 5px;">
+                        <small>
+                            Sindupedia contains an <b>well organised sinhala music collection divided by genres</b>. Anyone can listen to these audio clips or download them.
+                        </small>
+                    </p>
+                    <div style="padding-top: 10px; text-align: center;">
+                        <button 
+                        onclick="hideModal()"
+                        type="button" 
+                        class="btn btn-dark"
+                        style="border-radius: 30px; width: 130px"
+                        >Ok
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if modalState %}
+        <h3 class="font-weight-bold p-3 pb-0 customclass">Hello {{session.authdata.fname}},</h3>
+    {% else %}
+        <h3 class="font-weight-bold p-3 pb-0 customclass">Welcome back {{session.authdata.fname}},</h3>
+    {% endif %}
+    
+    <p class="p-3 pb-0 pt-0 customclass">
+        Sindupedia is a platform to analyse genres of Sinhala songs. You can use this platform to genre analysis and music browsing.
+    </p>
+    <p class="p-3 pb-0 pt-0 customclass">Now let's find the genre of a song !!</p>
+
+    <input type="hidden" value="{{modalState}}" id="modalShowState">
+
+    <hr style="max-width: 1300px;">
+
+    <!-- <div class="d-flex justify-content-center"></div> -->
+    <form action="{{ url_for('collectFormData') }}" method="post" enctype="multipart/form-data" class="mt-4" id="data-form-songs">
+        <div class="form-group p-3">
+            <label for="formFile" class="form-label customclass">Upload an audio clip</label>
+            <input 
+                type="file" 
+                class="form-control w-75" 
+                id="file" 
+                name="file" 
+                accept=".mp3"
+                style="border-radius: 10px;"
+            >
+        </div>
+        <div class="p-3">
+            <strong class="customclass">OR</strong>
+        </div>
+        <div class="form-group p-3">
+            <label for="urls" class="text-dark customclass">Provide a URL so we will download it for you</label>
+            <input 
+                type="text" 
+                class="form-control w-75" 
+                id="urls" 
+                name="urls" 
+                placeholder="Enter URL"
+                style="border-radius: 10px;"
+            >
+        </div>
+
+        <div class="p-3 pt-4">
+            <button 
+                type="reset" 
+                class="btn btn-dark"
+                style="border-radius: 30px; width: 175px"
+            >&#215; Clear</button>
+            <button 
+                type="submit" 
+                class="btn btn-primary"
+                style="border-radius: 30px;  width: 175px; margin-left: 20px"
+            >Proceed &#8594;</button>
+        </div>
+    </form>
+
+    <!-- Placeholder div -->
+    <div style="margin-top: 71px;"></div>
+</div>
+
+<div class="d-flex align-items-center justify-content-center pending-body" id="pending-body" style="display: none !important;">
+    <div class="spinner-grow text-dark" role="status" style="height: 70px; width: 70px;">
+    </div>
+    <h2 class="customclass text-dark" style="padding-left: 28px; padding-top: 10px;">Please hold on for a moment, We are analysing the song.</h2>
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        let showModal = document.getElementById("modalShowState").value
+
+        if (showModal == "True"){
+            $('#myModal').modal('show')
+        }
+    })
+
+    document.getElementById('data-form-songs').addEventListener('submit', function(evt){
+        document.querySelector('#main-body').style.display = 'none';
+        document.querySelector('#sindupedia-nav').style.display = 'none';
+        document.querySelector('#sindupedia-footer').style.display = 'none';
+        document.querySelector('#pending-body').style.display = 'block';
+    })
+
+    function hideModal(){
+        $("#myModal").modal('hide')
+    }
+
+</script>
+
+<style>
+    .customclass{
+        font-family: 'Inter', sans-serif !important
+    }
+    .pending-body{
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom:0;
+        right:0;
+    }
+</style>
+{% endblock %}
