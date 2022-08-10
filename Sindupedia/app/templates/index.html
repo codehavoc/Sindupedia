@@ -6,7 +6,7 @@
 <!-- Page Content -->
 {% block content %}
 
-<div class="main-body" id="main-body">
+<div class="main-body" id="main-body" style="height: 86%;">
     {% with alerts = get_flashed_messages(with_categories=true) %}
         {% if alerts %}
             {% for category,alt in alerts %}
@@ -77,7 +77,7 @@
 
     <input type="hidden" value="{{modalState}}" id="modalShowState">
 
-    <hr style="max-width: 1300px;">
+    <hr style="width: 95%;">
 
     <!-- <div class="d-flex justify-content-center"></div> -->
     <form action="{{ url_for('collectFormData') }}" method="post" enctype="multipart/form-data" class="mt-4" id="data-form-songs">
@@ -122,7 +122,7 @@
     </form>
 
     <!-- Placeholder div -->
-    <div style="margin-top: 71px;"></div>
+    <!-- <div style="margin-top: 144px;"></div> -->
 </div>
 
 <div class="d-flex align-items-center justify-content-center pending-body" id="pending-body" style="display: none !important;">

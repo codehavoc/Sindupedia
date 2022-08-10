@@ -870,6 +870,12 @@ def downloadGeneratedMp3(filename):
     
     return send_from_directory(path,filename)
 
+
+
+@app.route("/About-Us", methods=['GET'])
+def aboutUs():
+    return render_template('aboutus.html')
+
 # =========================================================================================================================================================
 if __name__ == "__main__":
     # db.drop_all()

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+<!-- Page title -->
+{% block title %}Sindupedia{% endblock %}
+
+<!-- Page Content -->
+{% block content %}
+
+<div class="main-body" id="main-body" style="height: 85.5%;">
+    <h3 class="font-weight-bold pt-3 pl-0 customclass">About The Developer</h3>
+    <hr style="width: 95%;">
+
+    <div class="pt-2 pb-5">
+        <div class="row">
+            <div class="col-3">
+                <img src="/static/profile_image.jfif" alt="Udara">
+            </div>
+            <div class="col-9" style="padding-right: 130px !important; align-items: center;">
+                <h4 class="font-weight-bold pt-3 pl-0 customclass">Udara Nayana Indeewara</h4>
+                <h5 class="pt-3 text-secondary">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptas quod nihil quia. Atque nemo, eveniet excepturi assumenda fugiat dignissimos temporibus cumque voluptate, quo ex id ratione. Omnis dolorem doloribus ipsum.</h5>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="font-weight-bold pt-3 pl-0 customclass">Special Thanks To</h3>
+    <hr style="width: 95%;">
+    <h5 class="pt-2 text-secondary">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptas quod nihil quia. Atque nemo, eveniet excepturi assumenda fugiat dignissimos temporibus cumque voluptate, quo ex id ratione. Omnis dolorem doloribus ipsum.</h5>
+    
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        let showModal = document.getElementById("modalShowState").value
+
+        if (showModal == "True"){
+            $('#myModal').modal('show')
+        }
+    })
+
+    document.getElementById('data-form-songs').addEventListener('submit', function(evt){
+        document.querySelector('#main-body').style.display = 'none';
+        document.querySelector('#sindupedia-nav').style.display = 'none';
+        document.querySelector('#sindupedia-footer').style.display = 'none';
+        document.querySelector('#pending-body').style.display = 'block';
+    })
+
+    function hideModal(){
+        $("#myModal").modal('hide')
+    }
+
+</script>
+
+<style>
+    .customclass{
+        font-family: 'Inter', sans-serif !important
+    }
+    .pending-body{
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom:0;
+        right:0;
+    }
+    img{
+        border-radius: 100%;
+        height: 250px;
+        weight: 250px;
+    }
+</style>
+{% endblock %}
